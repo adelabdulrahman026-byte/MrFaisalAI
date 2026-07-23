@@ -23,13 +23,17 @@ app.post("/webhook", async (req, res) => {
 
         console.log(JSON.stringify(req.body, null, 2));
 
-        const prompt = fs.readFileSync("prompt.txt","utf8");
+ 
+       const prompt = fs.readFileSync("prompt.txt","utf8");
 
-        const userMessage =
-            req.body.message ||
-            req.body.text ||
-            req.body.body ||
-            "";
+  const userMessage =
+    req.body.payload?.body ||
+    req.body.message ||
+    req.body.text ||
+    req.body.body ||
+    "";
+
+const from = req.body.payload?.from;
 
         if(!userMessage){
             return res.sendStatus(200);
@@ -56,7 +60,19 @@ app.post("/webhook", async (req, res) => {
 
         console.log(reply);
 
-        // هنا هنبعت الرد لـ WaPilot في الخطوة الجاية
+   await axios.post(
+    "https://api.wapilot.net/api/v2/instance1680/send-message",
+    {
+        phone: from,
+        message: reply
+    },
+    {
+        headers: {
+            Authorization: `Bearer ${process.env.WAPILOT_API_KEY}`,
+            "Content-Type": "application/json"
+        }
+    }
+);
 
         res.sendStatus(200);
 
