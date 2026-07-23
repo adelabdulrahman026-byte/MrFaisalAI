@@ -38,8 +38,10 @@ app.post("/webhook", async (req, res) => {
             "";
 
 
-        let chatId = req.body.payload?.from;
+let chatId = req.body.payload?.from;
 
+console.log("FROM:", chatId);
+console.log("PAYLOAD:", req.body.payload);
 
         if (!userMessage) {
             return res.sendStatus(200);
