@@ -9,17 +9,11 @@ const app = express();
 
 app.use(express.json());
 
-<<<<<<< HEAD
-const genAI = new GoogleGenerativeAI(
-    process.env.GEMINI_API_KEY
-);
-=======
 
 const genAI = new GoogleGenerativeAI(
     process.env.GEMINI_API_KEY
 );
 
->>>>>>> a30a028765a81399b1520cd97ecdffb982b381bc
 
 app.get("/", (req, res) => {
     res.send("Mr Faisal AI Running ✅");
@@ -54,11 +48,7 @@ app.post("/webhook", async (req, res) => {
 
         // Gemini AI
         const model = genAI.getGenerativeModel({
-<<<<<<< HEAD
             model: "gemini-2.0-flash"
-=======
-            model: "gemini-2.5-flash"
->>>>>>> a30a028765a81399b1520cd97ecdffb982b381bc
         });
 
 
@@ -80,11 +70,7 @@ ${userMessage}
 
 
 
-<<<<<<< HEAD
-        // إرسال الرد للواتساب
-=======
         // Send WhatsApp Reply
->>>>>>> a30a028765a81399b1520cd97ecdffb982b381bc
         await axios.post(
             "https://api.wapilot.net/api/v2/instance1680/send-message",
             {
@@ -103,11 +89,7 @@ ${userMessage}
         res.sendStatus(200);
 
 
-<<<<<<< HEAD
-    } catch(err) {
-=======
     } catch (err) {
->>>>>>> a30a028765a81399b1520cd97ecdffb982b381bc
 
         console.log(
             err.response?.data || err.message
@@ -125,8 +107,4 @@ app.listen(
     () => {
         console.log("Server Running ✅");
     }
-<<<<<<< HEAD
 );
-=======
-);
->>>>>>> a30a028765a81399b1520cd97ecdffb982b381bc
