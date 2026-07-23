@@ -48,7 +48,7 @@ app.post("/webhook", async (req, res) => {
 
         // Gemini AI
         const model = genAI.getGenerativeModel({
-            model: "gemini-2.0-flash"
+            model: "Gemini 3.5 Flash Lite"
         });
 
 
