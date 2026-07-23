@@ -46,7 +46,6 @@ app.post("/webhook", async (req, res) => {
         }
 
 
-        // تحويل LID إلى صيغة واتساب
         if (chatId && chatId.includes("@lid")) {
             chatId = chatId.replace("@lid", "@c.us");
         }
@@ -56,7 +55,6 @@ app.post("/webhook", async (req, res) => {
 
 
 
-        // Gemini AI
         const model = genAI.getGenerativeModel({
             model: "gemini-3.5-flash-lite"
         });
@@ -80,19 +78,34 @@ ${userMessage}
 
 
         // Send WhatsApp Reply via WAPilot
-        await axios.post(
-            "https://api.wapilot.net/api/v2/instance1680/send-message",
-            {
-                chat_id: chatId,
-                text: reply
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${process.env.WAPILOT_API_KEY}`,
-                    "Content-Type": "application/json"
+        try {
+
+            const send = await axios.post(
+                "https://api.wapilot.net/api/v2/instance1680/send-message",
+                {
+                    chat_id: chatId,
+                    text: reply
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${process.env.WAPILOT_API_KEY}`,
+                        "Content-Type": "application/json"
+                    }
                 }
-            }
-        );
+            );
+
+
+            console.log("WAPilot Response:", send.data);
+
+
+        } catch (error) {
+
+            console.log(
+                "WAPilot Error:",
+                error.response?.data || error.message
+            );
+
+        }
 
 
         res.sendStatus(200);
@@ -101,6 +114,7 @@ ${userMessage}
     } catch (err) {
 
         console.log(
+            "Server Error:",
             err.response?.data || err.message
         );
 
