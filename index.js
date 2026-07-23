@@ -38,12 +38,22 @@ app.post("/webhook", async (req, res) => {
             "";
 
 
-        const from = req.body.payload?.from;
+        let chatId = req.body.payload?.from;
 
 
         if (!userMessage) {
             return res.sendStatus(200);
         }
+
+
+        // تحويل LID إلى صيغة واتساب
+        if (chatId && chatId.includes("@lid")) {
+            chatId = chatId.replace("@lid", "@c.us");
+        }
+
+
+        console.log("Chat ID:", chatId);
+
 
 
         // Gemini AI
@@ -66,16 +76,15 @@ ${userMessage}
 
 
         console.log("AI Reply:", reply);
-        console.log("Send To:", from);
 
 
 
-        // Send WhatsApp Reply
+        // Send WhatsApp Reply via WAPilot
         await axios.post(
             "https://api.wapilot.net/api/v2/instance1680/send-message",
             {
-                phone: from,
-                message: reply
+                chat_id: chatId,
+                text: reply
             },
             {
                 headers: {
